@@ -29,7 +29,7 @@ Should you want to create a bigger default HashMap or set the memory allocation 
  // Key=string , Value=float
 ```
 
-###Example
+### Example
 To compile the included example
 ```
  g++ -std=c++11 example.cpp -o example
