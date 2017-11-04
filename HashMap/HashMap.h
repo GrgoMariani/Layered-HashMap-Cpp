@@ -58,7 +58,7 @@ public:
                 }
                 return true;
             }
-			if( !dooptimization && blocks[i].isFlagErased_opt()) dooptimization=true, remember=i;
+			if( !dooptimization && blocks[i].isFlagErased_opt() ) dooptimization=true, remember=i;
 			if( blocks[i].isFlagEmpty_opt() ) return false;      //The element cannot exist if it is found on flag empty
         }
         return false;
