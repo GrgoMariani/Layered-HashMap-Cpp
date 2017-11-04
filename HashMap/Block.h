@@ -29,7 +29,9 @@ public:
         mempair=new std::pair<KEY, VALUE>*[prime];
         flags = new unsigned char[(prime>>2)+1]();                           //All flags set to FLAG_EMPTY
     }
-    ~Block(){}
+    ~Block(){
+        free_memory();
+    }
 
     const std::pair<KEY, VALUE>& getElement(const KEY& key){
         return getIntElement(recommendedPosition(key));
@@ -174,7 +176,7 @@ private:
     }
     //! Save a lot of memory this way
     unsigned char getFlag(const unsigned int& position){
-        return (flags[position>>2] & ( 0b11<<((position&0b11)<<1) ))>>((position & 0b11)<<1);
+        return ((flags[position>>2] )>>((position & 0b11)<<1))  & 0b11;
     }
     void setFlag(const unsigned int& position, const unsigned char& flag){
         flags[position>>2] &=  ~( 0b11<<( (position&0b11)<<1 ) ) ;
