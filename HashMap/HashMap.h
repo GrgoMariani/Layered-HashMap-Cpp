@@ -139,7 +139,7 @@ public:
     unsigned int getDepth(){
         return blocks.size();
     }
-    double chanceToOverflowOnNext(){
+    double chanceToCollideOnNext(){
         double result=100;
         for(auto& block : blocks){
             result*=(double) block->getOccupancy()/block->getMaxOccupancy();

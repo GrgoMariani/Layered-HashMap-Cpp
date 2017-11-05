@@ -45,7 +45,7 @@ void print_stats(CRT::HashMap<K,V>& hashmap){
     cout<<"Depth of HashMap is                            : "<<hashmap.getDepth()<<endl;
     cout<<"Occupied space                                 : "<<hashmap.getOccupancy()<<endl;
     cout<<"                                                /"<<hashmap.getMaxOccupancy()<<" ="<<(float)hashmap.getOccupancy()*100/hashmap.getMaxOccupancy()<<"%"<<endl;
-    cout<<"Chance the next element will be in collision   : "<<hashmap.chanceToOverflowOnNext()<<"%"<<endl<<endl;
+    cout<<"Chance the next element will be in collision   : "<<hashmap.chanceToCollideOnNext()<<"%"<<endl<<endl;
     //hashmap.print_all();
 }
 
@@ -67,10 +67,11 @@ void string_example(unsigned int number_of_elements, unsigned int size_of_first_
 
 void usage_example(){
     cout<<endl<<" STANDARD USAGE EXAMPLE : "<<endl;
-    CRT::HashMap<string, string> hm;
+    CRT::HashMap<string, string> hm(15);
     string value;
-    hm.put("Key 1", "Value 1"); hm.put("Key 2", "Value 2"); hm.put("Key 3", "Value 3"); hm.put("Key 4", "Value 4"); hm.put("Key 5", "Value 5"); hm.put("Key 6", "Value 6");
     cout<<"Using put()"<<endl;
+    hm.put("Key 1", "Value 1"); hm.put("Key 2", "Value 2"); hm.put("Key 3", "Value 3"); hm.put("Key 4", "Value 4"); hm.put("Key 5", "Value 5"); hm.put("Key 6", "Value 6");
+    hm.put("Key 7", "Value 7"); hm.put("Key 8", "Value 8"); hm.put("Key 9", "Value 9"); hm.put("Key 10", "Value 10"); hm.put("Key 11", "Value 11"); hm.put("Key 12", "Value 12");
     print_stats(hm);
     cout<<"Using get()"<<endl;
     if( hm.get("NonExistingKey",value))

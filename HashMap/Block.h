@@ -25,7 +25,7 @@ template <typename KEY, typename VALUE>
 class Block{
 public:
     //Constructor allocates memory && sets flags to zero
-    Block(const int prime) : _prime(prime){
+    Block(const unsigned int& prime) : _prime(prime){
         mempair=new std::pair<KEY, VALUE>*[prime];
         flags = new unsigned char[(prime>>2)+1]();                           //All flags set to FLAG_EMPTY
     }
@@ -81,25 +81,19 @@ public:
     const unsigned int& getMaxOccupancy(){
         return _prime;
     }
-    void free_memory(){
-        for(int i=0; (i<_prime && occupancy>0);++i)
-            if(!isIntPositionFree(i))
-                deleteIntElement(i);
-        delete[] mempair;
-        delete[] flags;
-    }
-    unsigned int recommendedPosition(const std::pair<KEY,VALUE>& pairkeyvalue){
+    const unsigned int recommendedPosition(const std::pair<KEY,VALUE>& pairkeyvalue){
         return hashFunction(pairkeyvalue.first);
     }
-    unsigned int recommendedPosition(const KEY& key){
+    const unsigned int recommendedPosition(const KEY& key){
         return hashFunction(key);
     }
     //Only for Debug purposes
     /*! void print_all(){
         for(unsigned int i=0; i<_prime; i++){
-            std::cout<<i<<" Flag: "<<(getFlag(i)==FLAG_EMPTY?" EMPTY ":(getFlag(i)==FLAG_TAKEN?" TAKEN ":"DELETED"))<<std::endl;
+            std::cout<<i<<"  Flag: "<<(getFlag(i)==FLAG_EMPTY?" EMPTY ":(getFlag(i)==FLAG_TAKEN?" TAKEN ":"DELETED"));
             if( getFlag(i) == FLAG_TAKEN )
-                std::cout<<"        KEY: "<<mempair[i]->first<<" VALUE: "<<mempair[i]->second<<std::endl;
+                std::cout<<"    KEY: "<<mempair[i]->first<<" VALUE: "<<mempair[i]->second<<std::endl;
+            else std::cout<<std::endl;
         }
     }*/
 public:
@@ -142,30 +136,30 @@ protected:
         return std::hash<KEY>{}(key)%_prime;
     }
 private:
-    bool isKeyOnPosition(const KEY& key, const int& position){
+    bool isKeyOnPosition(const KEY& key, const unsigned int& position){
         if( !isIntPositionFree(position) && getIntElement(position).first==key )
             return true;
         return false;
     }
-    bool isIntPositionErased(const int& whatposition){
+    bool isIntPositionErased(const unsigned int& whatposition){
         if(getFlag(whatposition)==FLAG_ERASED)
             return true;
         return false;
     }
-    bool isIntPositionFree(const int& whatposition){
+    bool isIntPositionFree(const unsigned int& whatposition){
         if(getFlag(whatposition)==FLAG_TAKEN)
             return false;
         return true;
     }
-    void deleteIntElement(const int& whatposition){
+    void deleteIntElement(const unsigned int& whatposition){
         delete mempair[whatposition];
         occupancy--;
         setFlag(whatposition, FLAG_ERASED);
     }
-    const std::pair<KEY, VALUE>& getIntElement(const int& whatposition){
+    const std::pair<KEY, VALUE>& getIntElement(const unsigned int& whatposition){
         return *(mempair[whatposition]);
     }
-    void setElement(const int& whatposition, const std::pair<KEY, VALUE>& whatkeyvalue){
+    void setElement(const unsigned int& whatposition, const std::pair<KEY, VALUE>& whatkeyvalue){
         if( isIntPositionFree(whatposition) ){
             mempair[whatposition]=new std::pair<KEY, VALUE>(whatkeyvalue);
             occupancy++;
@@ -174,13 +168,30 @@ private:
         }
         mempair[whatposition]->first=whatkeyvalue.first, mempair[whatposition]->second=whatkeyvalue.second;
     }
+    void free_memory(){
+        for(register unsigned int i=0; occupancy>0; ++i){
+            register unsigned char regchar = flags[i] & 0b01010101;
+            if(regchar){
+                if( regchar & 0b00000001 )
+                    deleteIntElement( i<<2 );
+                if( regchar & 0b00000100 )
+                    deleteIntElement( (i<<2)|0b01 );
+                if( regchar & 0b00010000 )
+                    deleteIntElement( (i<<2)|0b10 );
+                if( regchar & 0b01000000 )
+                    deleteIntElement( (i<<2)|0b11 );
+            }
+        }
+        delete[] mempair;
+        delete[] flags;
+    }
     //! Save a lot of memory this way
     unsigned char getFlag(const unsigned int& position){
-        return ((flags[position>>2] )>>((position & 0b11)<<1))  & 0b11;
+        return ( flags[position>>2] >>( (position&0b11)<<1) ) & 0b11;
     }
     void setFlag(const unsigned int& position, const unsigned char& flag){
         flags[position>>2] &=  ~( 0b11<<( (position&0b11)<<1 ) ) ;
-        flags[position>>2] |= flag<<((position&0b11)<<1);
+        flags[position>>2] |= flag<<( (position&0b11)<<1 );
     }
 private:
     const unsigned int _prime;

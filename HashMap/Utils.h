@@ -28,9 +28,10 @@ int nextPrime(unsigned int a)
 }
 int previousPrime(unsigned int a, unsigned int minPrime=13)
 {
-    while (!isPrime(--a))
-        if(a<=minPrime)
-            return minPrime;
+    if(a<=minPrime)
+        return minPrime;
+    while (!isPrime(--a)){
+    }
     return a;
 }
 
