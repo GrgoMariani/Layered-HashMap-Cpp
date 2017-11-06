@@ -87,7 +87,12 @@ void usage_example(){
     if( hm.get("Key 3",value))
         cout<<"!!! Something went wrong "<<endl;
     else
-        cout<<"'Key 3' removed";
+        cout<<"'Key 3' removed"<<endl;
+    hm.remove("Key 7");
+    if( hm.get("Key 7",value))
+        cout<<"!!! Something went wrong "<<endl;
+    else
+        cout<<"'Key 7' removed";
     print_stats(hm);
     cout<<"Using clear()"<<endl;
     hm.clear();

@@ -88,7 +88,7 @@ public:
             return;
         }
         //! A touch of optimization
-        for(unsigned int i=0 ; i<keyvector.size(); ++i){
+        /*! for(unsigned int i=0 ; i<keyvector.size(); ++i){
             KEY currkey = keyvector[i];
             for(unsigned int j=i; j<keyvector.size(); ++j)
                 if( blocks[j]->isFlagFree(currkey) ){
@@ -97,7 +97,7 @@ public:
                     blocks[i]->setElement_opt(keyvalue);
                     return;
                 }
-        }
+        }*/
         //! This is the part of the code where we insert the new Block,
         //! We also could do some optimizations should we want to reduce memory allocation even more
         //! This part could vary from implementation to implementation
@@ -108,6 +108,7 @@ public:
         else
             nextSize=nextPrime(nextSize);
         blocks.push_back( new Block<KEY, VALUE>(nextSize) );
+        blocks[blocks.size()-1]->setKey_opt(key);
         blocks[blocks.size()-1]->setElement_opt(keyvalue);
     }
     void remove(const KEY& key){
@@ -146,7 +147,7 @@ public:
     //Only for Debug purposes
     /*! void print_all(){
         for(unsigned int i=0; i<blocks.size(); i++){
-            std::cout<<std::endl<<"------BLOCK "<<i<<"------"<<endl;
+            std::cout<<std::endl<<"------BLOCK "<<i<<"------"<<std::endl;
             blocks[i]->print_all();
         }
     }*/
@@ -155,9 +156,9 @@ public:
     }
     double chanceToCollideOnNext(){
         double result=100;
-        for(auto& block : blocks){
-            result*=(double) block->getOccupancy()/block->getMaxOccupancy();
-        }
+        for(unsigned int i=0; i<blocks.size(); ++i)
+            for(unsigned int j=i; j<blocks.size(); ++j)
+                result*=(double) blocks[j]->getOccupancy()/blocks[j]->getMaxOccupancy();
         return result;
     }
 private:
