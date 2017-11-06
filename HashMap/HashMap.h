@@ -140,16 +140,15 @@ public:
         return getMaxOccupancy()-getOccupancy();
     }
     float getSpeed(){
-        unsigned int sum=0, i=0;
+        unsigned int sum=0;
         for(auto& block : blocks)
-            sum+=(++i)*block->getOccupancy();
+            sum += block->getBlockId()*block->getOccupancy();
         return (float)sum/(getOccupancy()>1?getOccupancy():1);
     }
     //Only for Debug purposes
     /*! void print_all(){
-        for(unsigned int i=0; i<blocks.size(); i++){
-            std::cout<<std::endl<<"------BLOCK "<<i<<"------"<<std::endl;
-            blocks[i]->print_all();
+        for(auto& block : blocks){
+            block->print_all();
         }
     }*/
     unsigned int getDepth(){

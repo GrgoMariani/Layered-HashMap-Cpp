@@ -26,23 +26,17 @@ class Block{
 public:
     //Constructor allocates memory && sets flags to zero
     Block(const unsigned int& prime) : _prime(prime){
-        mempair=new std::pair<KEY, VALUE>*[prime];
-        flags = new unsigned char[(prime>>2)+1]();                           //All flags set to FLAG_EMPTY
+        mempair = new std::pair<KEY, VALUE>*[prime];
+        flags   = new unsigned char[(prime>>2)+1]();                           //All flags set to FLAG_EMPTY
+        blockId= (++Block<KEY,VALUE>::n_blocks);
     }
     ~Block(){
+        Block<KEY,VALUE>::n_blocks--;
         free_memory();
     }
 
     const std::pair<KEY, VALUE>& getElement(const KEY& key){
         return getIntElement(recommendedPosition(key));
-    }
-    bool setElement(const std::pair<KEY, VALUE>& whatkeyvalue){             //Returns true if element set, false if wrong element
-        unsigned int position=recommendedPosition(whatkeyvalue);
-        if(!isIntPositionFree(position) )
-            if(!isKeyOnPosition(whatkeyvalue.first, position))
-                return false;
-        setElement(position, whatkeyvalue);
-        return true;
     }
     bool deleteElement(const KEY& key){                                     //Returns true if element deleted from this block
         unsigned int position = recommendedPosition(key);
@@ -50,29 +44,6 @@ public:
             deleteIntElement(position);
             return true;
         }
-        return false;
-    }
-    bool isKeyHere(const KEY& key){
-        return isKeyOnPosition(key, recommendedPosition(key));
-    }
-    bool isFlagFree(const KEY& key){
-        return isIntPositionFree(recommendedPosition(key));
-    }
-    bool isFlagErased(const KEY& key){
-        return isIntPositionErased(recommendedPosition(key));
-    }
-    bool isKeyInBlock(const KEY& key){
-        return isKeyOnPosition(key, recommendedPosition(key));
-    }
-    bool isFlagEmpty(const KEY& key){
-        if( getFlag(recommendedPosition(key))==FLAG_EMPTY )
-            return true;
-        return false;
-    }
-    bool isKeyHereOrPositionEmpty(const KEY& key){
-        unsigned int position=recommendedPosition(key);
-        if(isKeyOnPosition(key, position)||isIntPositionFree(position))
-            return true;
         return false;
     }
     const unsigned int& getOccupancy(){
@@ -87,12 +58,16 @@ public:
     const unsigned int recommendedPosition(const KEY& key){
         return hashFunction(key);
     }
+    const unsigned int& getBlockId(){
+        return blockId;
+    }
     //Only for Debug purposes
     /*! void print_all(){
+        std::cout<<std::endl<<"------BLOCK "<<blockId<<"------"<<std::endl;
         for(unsigned int i=0; i<_prime; i++){
             std::cout<<i<<"  Flag: "<<(getFlag(i)==FLAG_EMPTY?" EMPTY ":(getFlag(i)==FLAG_TAKEN?" TAKEN ":"DELETED"));
             if( getFlag(i) == FLAG_TAKEN )
-                std::cout<<"    KEY: "<<mempair[i]->first<<" VALUE: "<<mempair[i]->second<<std::endl;
+                std::cout<<"       KEY: "<<mempair[i]->first<<" VALUE: "<<mempair[i]->second<<std::endl;
             else std::cout<<std::endl;
         }
     }*/
@@ -111,9 +86,15 @@ public:
     bool isFlagFree_opt(){
         return isIntPositionFree( _position );
     }
-    bool isFlagErased_opt(){return isIntPositionErased(_position);}
-    bool isKeyHere_opt(const KEY& key){ return isKeyOnPosition(key, _position);}
-    const std::pair<KEY, VALUE>& getElement_opt(){return getIntElement(_position);}
+    bool isFlagErased_opt(){
+        return isIntPositionErased(_position);
+    }
+    bool isKeyHere_opt(const KEY& key){
+        return isKeyOnPosition(key, _position);
+    }
+    const std::pair<KEY, VALUE>& getElement_opt(){
+        return getIntElement(_position);
+    }
     bool deleteElement_opt(const KEY& key){                                     //Returns true if element deleted from this block
         if(isKeyOnPosition(key, _position) && !isIntPositionFree(_position)){
             deleteIntElement(_position);
@@ -121,7 +102,7 @@ public:
         }
         return false;
     }
-    const KEY getKeyHere_opt(){
+    const KEY& getKeyHere_opt(){
         return getElement_opt().first;
     }
     bool setElement_opt(std::pair<KEY, VALUE>* whatkeyvalue){             //Returns true if element set, false if wrong element
@@ -143,7 +124,6 @@ public:
         mempair[_position]=whatkeyvalue;
         return true;
     }
-
 protected:
     /*To change your hashFunction change this function*/
     unsigned int hashFunction(const KEY& key){
@@ -221,7 +201,12 @@ private:
     unsigned char * flags;
     unsigned int occupancy=0;
 
-    unsigned int _position=0; //Last minute change, used to speedup get&put methods
+    static unsigned int n_blocks;
+    unsigned int blockId;
+    unsigned int _position=0;
 };
+
+template <typename KEY, typename VALUE>
+unsigned int Block<KEY,VALUE>::n_blocks = 0;
 
 }
