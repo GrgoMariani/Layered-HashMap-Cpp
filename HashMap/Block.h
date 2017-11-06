@@ -139,6 +139,11 @@ public:
         return false;
     }
     std::pair<KEY, VALUE>* getElementPointer_opt(){ return mempair[_position]; }
+    bool setPointer_opt(std::pair<KEY, VALUE>* whatkeyvalue){             //Returns true if element set, false if wrong element
+        mempair[_position]=whatkeyvalue;
+        return true;
+    }
+
 protected:
     /*To change your hashFunction change this function*/
     unsigned int hashFunction(const KEY& key){

@@ -88,16 +88,17 @@ public:
             return;
         }
         //! A touch of optimization
-        /*! for(unsigned int i=0 ; i<keyvector.size(); ++i){
+        for(unsigned int i=0 ; i<keyvector.size(); ++i){
             KEY currkey = keyvector[i];
-            for(unsigned int j=i; j<keyvector.size(); ++j)
-                if( blocks[j]->isFlagFree(currkey) ){
+            for(unsigned int j=i; j<keyvector.size(); ++j){
+                blocks[j]->setKey_opt(currkey);
+                if( blocks[j]->isFlagFree_opt() ){
                     blocks[j]->setElement_opt(blocks[i]->getElementPointer_opt());
-                    blocks[i]->deleteElement_opt(currkey);
-                    blocks[i]->setElement_opt(keyvalue);
+                    blocks[i]->setPointer_opt(keyvalue);
                     return;
                 }
-        }*/
+            }
+        }
         //! This is the part of the code where we insert the new Block,
         //! We also could do some optimizations should we want to reduce memory allocation even more
         //! This part could vary from implementation to implementation
