@@ -82,7 +82,7 @@ void usage_example(){
         cout<<"The value @ 'Key 2' is: "<<value<<endl;
     else
         cout<<"!!! Something went wrong"<<endl;
-    cout<<"Using remove() @ 'Key 3'"<<endl;
+    cout<<"Using remove() @      'Key 3'      &      'Key 7'"<<endl;
     hm.remove("Key 3");
     if( hm.get("Key 3",value))
         cout<<"!!! Something went wrong "<<endl;

@@ -9,7 +9,7 @@ bool isPrime(const unsigned int& number)
 {
     if (number == 2 || number == 3)
         return true;
-    if (number%2 == 0 || number%3 == 0)
+    if ( (number & 0x01) == 0 || number%3 == 0)
         return false;
     unsigned int divisor=5;
     while ( divisor*divisor <= number)

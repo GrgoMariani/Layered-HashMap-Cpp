@@ -88,13 +88,12 @@ public:
             return;
         }
         //! A touch of optimization
-        for(unsigned int i=0 ; i<keyvector.size(); ++i){
-            KEY currkey = keyvector[i];
-            for(unsigned int j=i; j<keyvector.size(); ++j){
-                blocks[j]->setKey_opt(currkey);
-                if( blocks[j]->isFlagFree_opt() ){
-                    blocks[j]->setElement_opt(blocks[i]->getElementPointer_opt());
-                    blocks[i]->setPointer_opt(keyvalue);
+        for(unsigned int i=1 ; i<keyvector.size(); ++i){
+            for(unsigned int j=0; j<=i; ++j){
+                blocks[i]->setKey_opt( keyvector[j] );
+                if( blocks[i]->isFlagFree_opt() ){
+                    blocks[i]->setElement_opt(blocks[j]->getElementPointer_opt());
+                    blocks[j]->setPointer_opt(keyvalue);
                     return;
                 }
             }
