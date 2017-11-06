@@ -108,6 +108,9 @@ public:
             return true;
         return false;
     }
+    bool isFlagFree_opt(){
+        return isIntPositionFree( _position );
+    }
     bool isFlagErased_opt(){return isIntPositionErased(_position);}
     bool isKeyHere_opt(const KEY& key){ return isKeyOnPosition(key, _position);}
     const std::pair<KEY, VALUE>& getElement_opt(){return getIntElement(_position);}
@@ -118,11 +121,16 @@ public:
         }
         return false;
     }
-    bool setElement_opt(const std::pair<KEY, VALUE>& whatkeyvalue){             //Returns true if element set, false if wrong element
-        if(!isIntPositionFree(_position) )
-            if(!isKeyOnPosition(whatkeyvalue.first, _position))
+    const KEY getKeyHere_opt(){
+        return getElement_opt().first;
+    }
+    bool setElement_opt(std::pair<KEY, VALUE>* whatkeyvalue){             //Returns true if element set, false if wrong element
+        if(!isIntPositionFree(_position) ){
+            if(!isKeyOnPosition(whatkeyvalue->first, _position))
                 return false;
-        setElement(_position, whatkeyvalue);
+            else deleteIntElement(_position);
+        }
+        setElementPointer(_position, whatkeyvalue);
         return true;
     }
     bool isKeyHereOrPositionEmpty_opt(const KEY& key){
@@ -130,6 +138,7 @@ public:
             return true;
         return false;
     }
+    std::pair<KEY, VALUE>* getElementPointer_opt(){ return mempair[_position]; }
 protected:
     /*To change your hashFunction change this function*/
     unsigned int hashFunction(const KEY& key){
@@ -167,6 +176,14 @@ private:
             return;
         }
         mempair[whatposition]->first=whatkeyvalue.first, mempair[whatposition]->second=whatkeyvalue.second;
+    }
+    void setElementPointer(const unsigned int& whatposition, std::pair<KEY, VALUE>* whatkeyvalue){
+        if( isIntPositionFree(whatposition) ){
+            mempair[whatposition]=whatkeyvalue;
+            occupancy++;
+            setFlag(whatposition, FLAG_TAKEN);
+            return;
+        }
     }
     void free_memory(){
         for(register unsigned int i=0; occupancy>0; ++i){

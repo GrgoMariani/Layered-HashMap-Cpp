@@ -53,7 +53,7 @@ public:
                 value=blocks[i]->getElement_opt().second;
                 if( dooptimization ){
                     blocks[i]->deleteElement_opt(key);               //We know the element is in this array so delete it now and put again
-                    blocks[remember]->setElement_opt(std::pair<KEY,VALUE>(key,value));
+                    blocks[remember]->setElement_opt(new std::pair<KEY,VALUE>(key,value));
                     value=blocks[remember]->getElement_opt().second;
                 }
                 return true;
@@ -65,11 +65,14 @@ public:
     }
 
     void put(const KEY& key, const VALUE& value){
-        std::pair<KEY, VALUE> keyvalue(key,value);
+        std::pair<KEY, VALUE>* keyvalue=new std::pair<KEY, VALUE>(key,value);
         register bool dooptimization=false;
         register unsigned int remember=0;
+        std::vector<KEY> keyvector;
         for(unsigned int i=0; i<blocks.size(); i++){
             blocks[i]->setKey_opt(key);
+            if( !blocks[i]->isFlagFree_opt() )
+                keyvector.push_back( blocks[i]->getKeyHere_opt() );
             if( blocks[i]->isKeyHereOrPositionEmpty_opt(key) ){
                 if(dooptimization){
                     blocks[i]->deleteElement_opt(key);
@@ -84,6 +87,17 @@ public:
             blocks[remember]->setElement_opt(keyvalue);
             return;
         }
+        //! A touch of optimization
+        for(unsigned int i=0 ; i<keyvector.size(); ++i){
+            KEY currkey = keyvector[i];
+            for(unsigned int j=i; j<keyvector.size(); ++j)
+                if( blocks[j]->isFlagFree(currkey) ){
+                    blocks[j]->setElement_opt(blocks[i]->getElementPointer_opt());
+                    blocks[i]->deleteElement_opt(currkey);
+                    blocks[i]->setElement_opt(keyvalue);
+                    return;
+                }
+        }
         //! This is the part of the code where we insert the new Block,
         //! We also could do some optimizations should we want to reduce memory allocation even more
         //! This part could vary from implementation to implementation
@@ -94,7 +108,7 @@ public:
         else
             nextSize=nextPrime(nextSize);
         blocks.push_back( new Block<KEY, VALUE>(nextSize) );
-        blocks[blocks.size()-1]->setElement(keyvalue);
+        blocks[blocks.size()-1]->setElement_opt(keyvalue);
     }
     void remove(const KEY& key){
         for(auto& block : blocks)
