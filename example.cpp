@@ -41,7 +41,8 @@ void print_stats(CRT::HashMap<K,V>& hashmap){
     cout<<"  |             ------STATS------             |"<<endl;
     cout<<"  |                                           |"<<endl;
     cout<<"   -------------------------------------------"<<endl<<endl;
-    cout<<"Average complexity to find element is          : "<<hashmap.getSpeed()<<endl;
+    cout<<"Average complexity to find element is          : "<<hashmap.getSpeed()<<"   /MAX: "<<hashmap.getDepth()<<endl;
+    cout<<"Average complexity to insert element is        : "<<hashmap.putSpeed()<<"   /MAX: "<<hashmap.getDepth()*(hashmap.getDepth()+1)/2<<endl;
     cout<<"Depth of HashMap is                            : "<<hashmap.getDepth()<<endl;
     cout<<"Occupied space                                 : "<<hashmap.getOccupancy()<<endl;
     cout<<"                                                /"<<hashmap.getMaxOccupancy()<<" ="<<(float)hashmap.getOccupancy()*100/hashmap.getMaxOccupancy()<<"%"<<endl;

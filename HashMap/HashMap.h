@@ -88,7 +88,7 @@ public:
             return;
         }
         //! A touch of optimization
-        for(unsigned int i=1 ; i<keyvector.size(); ++i){
+        for(unsigned int i=1 ; i<keyvector.size(); ++i)
             for(unsigned int j=0; j<=i; ++j){
                 blocks[i]->setKey_opt( keyvector[j] );
                 if( blocks[i]->isFlagFree_opt() ){
@@ -97,7 +97,6 @@ public:
                     return;
                 }
             }
-        }
         //! This is the part of the code where we insert the new Block,
         //! We also could do some optimizations should we want to reduce memory allocation even more
         //! This part could vary from implementation to implementation
@@ -122,7 +121,7 @@ public:
         blocks.clear();
         blocks.push_back( new Block<KEY, VALUE>(nextPrime(desiredSize)) );
     }
-    //Used for debug purposes
+    //! Used for debug purposes. You can delete or comment all of these
     unsigned int getMaxOccupancy(){
         unsigned int result=0;
         for(auto &block : blocks)
@@ -138,11 +137,27 @@ public:
     unsigned int getEmptySpace(){
         return getMaxOccupancy()-getOccupancy();
     }
+    // Get() is slightly faster than put, maximum path is blocks.size()
     float getSpeed(){
         unsigned int sum=0;
         for(auto& block : blocks)
             sum += block->getBlockId()*block->getOccupancy();
         return (float)sum/(getOccupancy()>1?getOccupancy():1);
+    }
+    // Put()'s maximum path is (blocks.size()^2+blocks.size())/2
+    float putSpeed(){
+        float result=0;
+        float chance=1.;
+        for(auto& block : blocks){
+            result += chance *(block->getBlockId())*( (float)(block->getMaxOccupancy()-block->getOccupancy() )/block->getMaxOccupancy());
+            chance *= (float)block->getOccupancy()/block->getMaxOccupancy();
+        }
+        for(unsigned int i=1; i<blocks.size(); ++i)
+            for(unsigned int j=0; j<i; j++){
+                result += (float) ( blocks.size() + j+1 +(i-1)*i/2 )*( (float)(blocks[i]->getMaxOccupancy()-blocks[i]->getOccupancy() )/ blocks[i]->getMaxOccupancy() )*chance;
+                chance *= (float) blocks[i]->getOccupancy()/blocks[i]->getMaxOccupancy();
+            }
+        return result + chance * ( blocks.size()+1 )*blocks.size()/2;
     }
     //Only for Debug purposes
     /*! void print_all(){

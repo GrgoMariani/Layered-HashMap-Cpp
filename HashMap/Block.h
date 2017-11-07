@@ -28,7 +28,7 @@ public:
     Block(const unsigned int& prime) : _prime(prime){
         mempair = new std::pair<KEY, VALUE>*[prime];
         flags   = new unsigned char[(prime>>2)+1]();                           //All flags set to FLAG_EMPTY
-        blockId= (++Block<KEY,VALUE>::n_blocks);
+        blockId = (++Block<KEY,VALUE>::n_blocks);
     }
     ~Block(){
         Block<KEY,VALUE>::n_blocks--;
@@ -67,14 +67,14 @@ public:
         for(unsigned int i=0; i<_prime; i++){
             std::cout<<i<<"  Flag: "<<(getFlag(i)==FLAG_EMPTY?" EMPTY ":(getFlag(i)==FLAG_TAKEN?" TAKEN ":"DELETED"));
             if( getFlag(i) == FLAG_TAKEN )
-                std::cout<<"       KEY: "<<mempair[i]->first<<" VALUE: "<<mempair[i]->second<<std::endl;
+                std::cout<<"       KEY: "<<getIntElement(i)->first<<" VALUE: "<<getIntElement(i)->second<<std::endl;
+                std::cout<<"       KEY: "<<getIntElement(i)->first<<" VALUE: "<<getIntElement(i)->second<<std::endl;
             else std::cout<<std::endl;
         }
     }*/
 public:
-    //! Added at last minute, no need to always count the key position, we can take
-    //! the last one used, They all have a _opt suffix and all have their counterparts
-    //! w/out _opt
+    //! Added at last minute, no need to always count the key position, we can take only the last used one
+    //!
     void setKey_opt(const KEY& key){
         _position=recommendedPosition(key);
     }
@@ -153,22 +153,10 @@ private:
     const std::pair<KEY, VALUE>& getIntElement(const unsigned int& whatposition){
         return *(mempair[whatposition]);
     }
-    void setElement(const unsigned int& whatposition, const std::pair<KEY, VALUE>& whatkeyvalue){
-        if( isIntPositionFree(whatposition) ){
-            mempair[whatposition]=new std::pair<KEY, VALUE>(whatkeyvalue);
-            occupancy++;
-            setFlag(whatposition, FLAG_TAKEN);
-            return;
-        }
-        mempair[whatposition]->first=whatkeyvalue.first, mempair[whatposition]->second=whatkeyvalue.second;
-    }
     void setElementPointer(const unsigned int& whatposition, std::pair<KEY, VALUE>* whatkeyvalue){
-        if( isIntPositionFree(whatposition) ){
-            mempair[whatposition]=whatkeyvalue;
-            occupancy++;
-            setFlag(whatposition, FLAG_TAKEN);
-            return;
-        }
+        mempair[whatposition]=whatkeyvalue;
+        occupancy++;
+        setFlag(whatposition, FLAG_TAKEN);
     }
     void free_memory(){
         for(register unsigned int i=0; occupancy>0; ++i){
