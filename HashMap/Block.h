@@ -17,10 +17,7 @@
  */
 #include "Memory.h"
 namespace CRT{
-/* Block is a part of memory where the current hash table is stored
- * Feel free to erase blockId and n_blocks variables, they're mostly here for debugging purposes
-   and can create problems if two same template HashMaps are used
- */
+/* Block is a part of memory where the current hash table is stored         */
 template <typename KEY, typename VALUE>
 class Block{
 public:
@@ -28,10 +25,8 @@ public:
     Block(const unsigned int& prime) : _prime(prime){
         memory = new Memory<KEY,VALUE>(prime);
         flags = new Flag(prime);
-        blockId = (++Block<KEY,VALUE>::n_blocks);
     }
     ~Block(){
-        Block<KEY,VALUE>::n_blocks--;
         free_memory();
         delete memory;
         delete flags;
@@ -60,12 +55,8 @@ public:
     const unsigned int recommendedPosition(const KEY& key){
         return hashFunction(key);
     }
-    const unsigned int& getBlockId(){
-        return blockId;
-    }
     //Only for Debug purposes
     /*! void print_all(){
-        std::cout<<std::endl<<"------BLOCK "<<blockId<<"------"<<std::endl;
         for(unsigned int i=0; i<_prime; i++){
             std::cout<<i<<"  Flag: "<<(flags->getFlag(i)==FLAG_EMPTY?" EMPTY ":(flags->getFlag(i)==FLAG_TAKEN?" TAKEN ":"DELETED"));
             if( flags->getFlag(i) == FLAG_TAKEN )
@@ -180,15 +171,10 @@ private:
     const unsigned int _prime;
     unsigned int occupancy=0;
 
-    static unsigned int n_blocks;
-    unsigned int blockId;
     unsigned int _position=0;
 
     Memory<KEY,VALUE> *memory;
     Flag *flags;
 };
-
-template <typename KEY, typename VALUE>
-unsigned int Block<KEY,VALUE>::n_blocks = 0;
 
 }

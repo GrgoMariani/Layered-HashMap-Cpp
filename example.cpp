@@ -47,6 +47,7 @@ void print_stats(CRT::HashMap<K,V>& hashmap){
     cout<<"Occupied space                                 : "<<hashmap.getOccupancy()<<endl;
     cout<<"                                                /"<<hashmap.getMaxOccupancy()<<" ="<<(float)hashmap.getOccupancy()*100/hashmap.getMaxOccupancy()<<"%"<<endl;
     cout<<"Chance the next element will be in collision   : "<<hashmap.chanceToCollideOnNext()<<"%"<<endl<<endl;
+    hashmap.print_get_vs_put();
     //hashmap.print_all();
 }
 
@@ -71,8 +72,8 @@ void usage_example(){
     CRT::HashMap<string, string> hm(15);
     string value;
     cout<<"Using put()"<<endl;
-    hm.put("Key 1", "Value 1"); hm.put("Key 2", "Value 2"); hm.put("Key 3", "Value 3"); hm.put("Key 4", "Value 4"); hm.put("Key 5", "Value 5"); hm.put("Key 6", "Value 6");
-    hm.put("Key 7", "Value 7"); hm.put("Key 8", "Value 8"); hm.put("Key 9", "Value 9"); hm.put("Key 10", "Value 10"); hm.put("Key 11", "Value 11"); hm.put("Key 12", "Value 12");
+    hm.put("Key 1", "Value 1");   hm.put("Key 2", "Value 2");   hm.put("Key 3", "Value 3");   hm.put("Key 4", "Value 4");   hm.put("Key 5", "Value 5");   hm.put("Key 6", "Value 6");
+    hm.put("Key 7", "Value 7");   hm.put("Key 8", "Value 8");   hm.put("Key 9", "Value 9");   hm.put("Key 10", "Value 10"); hm.put("Key 11", "Value 11"); hm.put("Key 12", "Value 12");
     hm.put("Key 13", "Value 13"); hm.put("Key 14", "Value 14"); hm.put("Key 15", "Value 15"); hm.put("Key 16", "Value 16"); hm.put("Key 17", "Value 17"); hm.put("Key 18", "Value 18");
     hm.put("Key 19", "Value 19"); hm.put("Key 20", "Value 20"); hm.put("Key 21", "Value 21"); hm.put("Key 22", "Value 22"); hm.put("Key 23", "Value 23"); hm.put("Key 24", "Value 24");
     hm.put("Key 25", "Value 25"); hm.put("Key 26", "Value 26"); hm.put("Key 27", "Value 27"); hm.put("Key 28", "Value 28"); hm.put("Key 29", "Value 29"); hm.put("Key 30", "Value 30");

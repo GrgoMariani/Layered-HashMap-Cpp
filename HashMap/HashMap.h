@@ -139,21 +139,21 @@ public:
     }
     // Get() is slightly faster than put, maximum path is blocks.size()
     float getSpeed(){
-        unsigned int sum=0;
+        unsigned int sum=0, iter=0;
         for(auto& block : blocks)
-            sum += block->getBlockId()*block->getOccupancy();
+            sum += (++iter)*block->getOccupancy();
         return (float)sum/(getOccupancy()>1?getOccupancy():1);
     }
     // Put()'s maximum path is (blocks.size()^2+blocks.size())/2
     float putSpeed(){
-        float result=0;
-        float chance=1.;
+        float result=0., chance=1.;
+        int iter=0;
         for(auto& block : blocks){
-            result += chance *(block->getBlockId())*( (float)(block->getMaxOccupancy()-block->getOccupancy() )/block->getMaxOccupancy());
+            result += chance *( ++iter)*( (float)(block->getMaxOccupancy()-block->getOccupancy() )/block->getMaxOccupancy());
             chance *= (float)block->getOccupancy()/block->getMaxOccupancy();
         }
         for(unsigned int i=1; i<blocks.size(); ++i)
-            for(unsigned int j=0; j<i; j++){
+            for(unsigned int j=0; j<i; ++j){
                 result += (float) ( blocks.size() + j+1 +(i-1)*i/2 )*( (float)(blocks[i]->getMaxOccupancy()-blocks[i]->getOccupancy() )/ blocks[i]->getMaxOccupancy() )*chance;
                 chance *= (float) blocks[i]->getOccupancy()/blocks[i]->getMaxOccupancy();
             }
@@ -161,10 +161,31 @@ public:
     }
     //Only for Debug purposes
     /*! void print_all(){
+        int iter=0;
         for(auto& block : blocks){
+            std::cout<<"------BLOCK "<<(++iter)<<"------"<<std:endl;
             block->print_all();
         }
     }*/
+    void print_get_vs_put(){
+        float chance=100.;
+        unsigned int iter=0;
+        std::cout<<std::endl<<"       get()     vs      put()"<<std::endl;
+        for(auto& block : blocks){
+            float res1 = 100*((float)block->getOccupancy()/(getOccupancy()>0?getOccupancy():1));
+            float res2 = chance * (float)(block->getMaxOccupancy()-block->getOccupancy())/block->getMaxOccupancy();
+            std::cout<<(res1<10.?" ":"")<<res1<<"%    "<<(res2<10.?" ":"")<<res2<<"%   in "<<(++iter)<<" tries"<<std::endl;
+            chance *= (float)block->getOccupancy()/block->getMaxOccupancy();
+        }
+        for(int i=0; i<blocks.size(); ++i){
+            for(int j=0; j<i; ++j){
+                float res2=(chance * (float)(blocks[i]->getMaxOccupancy()-blocks[i]->getOccupancy())/blocks[i]->getMaxOccupancy());
+                std::cout<<"              "<<(res2<10.?" ":"")<<res2<<"%   in "<<(++iter)<<" tries"<<std::endl;
+                chance *= (float)blocks[i]->getOccupancy()/blocks[i]->getMaxOccupancy();
+            }
+        }
+        std::cout<<"               "<<chance<<"%   in "<<(++iter)<<" tries"<<std::endl;
+    }
     unsigned int getDepth(){
         return blocks.size();
     }
