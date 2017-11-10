@@ -1,4 +1,4 @@
-## Chinese Remainder Theorem based HashMap (Hash Table)
+## Chinese Remainder Theorem based HashMap (Layered Hash Table)
 A C++11 header for HashMap structure
 
 ### Info
@@ -38,29 +38,29 @@ To compile the included example
 
 #### bool get(key, value)
 ```
- if( hashmap.get("some key", value) )
+ if( hashmap.get("requested key", value)
  {
 	result=value;
-	//If this is true then the Value is stored in value (nonreferenced)
+	//If this is true then the Value is stored in value (nonreferenced). //Copy constructor on value needed
  }
  else
  {
-	//no "some key" found
+	//no "requested key" found
  }
 ```
 The method automatically optimizes the hashmap where it can
 
 #### void put(Key, Value)
 ```
- hashmap.put("some key", Value) )
- // maps Value to "some key", if it fails to do so in this block, it allocates new block of memory for the next block
+ hashmap.put("requested key", Value)
+ // maps Value to "requested key", if it fails to do so in this block, it allocates new block of memory for the next block
  // Overwrites the old value if found
 ```
 The method also automatically optimizes the hashmap
 #### void remove(key)
 ```
- hashmap.remove( "some key") )
- // removes the "some key" mapping from memory
+ hashmap.remove( "requested key") )
+ // removes the "requested key" mapping from memory
 ```
 #### void clear()
 ```
@@ -68,7 +68,11 @@ The method also automatically optimizes the hashmap
  //deallocates all blocks and allocates one block of the same size as it started with
 ```
 
-###Other
+### Other
+Should you use your custom object as value don't forget to assign the correct copy constructor for it.
+
+I've commented a few methods I didn't use but you could find useful. HashMap::print_all() prints all elements of the table and the flags on positions. Feel free to uncomment it in 'Block.h' 'and HashMap.h' and use.
+
 The structure could be easily repurposed to read from HardDrive instead of RAM should you have even more elements, or even made with multithread support to get the best out of the speed and memory allocation.
 
 Or both.

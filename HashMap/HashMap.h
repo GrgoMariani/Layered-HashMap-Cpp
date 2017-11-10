@@ -170,7 +170,7 @@ public:
     void print_get_vs_put(){
         float chance=100.;
         unsigned int iter=0;
-        std::cout<<std::endl<<"       get()     vs      put()"<<std::endl;
+        std::cout<<std::endl<<"   get()   vs    put()"<<std::endl;
         for(auto& block : blocks){
             float res1 = 100*((float)block->getOccupancy()/(getOccupancy()>0?getOccupancy():1));
             float res2 = chance * (float)(block->getMaxOccupancy()-block->getOccupancy())/block->getMaxOccupancy();

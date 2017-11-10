@@ -77,6 +77,7 @@ void usage_example(){
     hm.put("Key 13", "Value 13"); hm.put("Key 14", "Value 14"); hm.put("Key 15", "Value 15"); hm.put("Key 16", "Value 16"); hm.put("Key 17", "Value 17"); hm.put("Key 18", "Value 18");
     hm.put("Key 19", "Value 19"); hm.put("Key 20", "Value 20"); hm.put("Key 21", "Value 21"); hm.put("Key 22", "Value 22"); hm.put("Key 23", "Value 23"); hm.put("Key 24", "Value 24");
     hm.put("Key 25", "Value 25"); hm.put("Key 26", "Value 26"); hm.put("Key 27", "Value 27"); hm.put("Key 28", "Value 28"); hm.put("Key 29", "Value 29"); hm.put("Key 30", "Value 30");
+    hm.put("Key 31", "Value 31"); hm.put("Key 32", "Value 32"); hm.put("Key 33", "Value 33"); hm.put("Key 34", "Value 34"); hm.put("Key 35", "Value 35"); hm.put("Key 36", "Value 36");
     print_stats(hm);
     cout<<"Using get()"<<endl;
     if( hm.get("NonExistingKey",value))
