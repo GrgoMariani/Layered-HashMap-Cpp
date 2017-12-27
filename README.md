@@ -37,6 +37,9 @@ To compile the included example
 ### Methods
 
 #### bool get(key, value)
+
+![get-algo](https://github.com/GrgoMariani/Layered-HashMap-Cpp/tree/master/GIFS/get.gif)
+
 ```
  if( hashmap.get("requested key", value)
  {
@@ -51,6 +54,9 @@ To compile the included example
 The method automatically optimizes the hashmap where it can
 
 #### void put(Key, Value)
+
+![put-algo](https://github.com/GrgoMariani/Layered-HashMap-Cpp/tree/master/GIFS/put.gif)
+
 ```
  hashmap.put("requested key", Value)
  // maps Value to "requested key", if it fails to do so in this block, it allocates new block of memory for the next block
@@ -58,6 +64,9 @@ The method automatically optimizes the hashmap where it can
 ```
 The method also automatically optimizes the hashmap
 #### void remove(key)
+
+![put-algo](https://github.com/GrgoMariani/Layered-HashMap-Cpp/tree/master/GIFS/remove.gif)
+
 ```
  hashmap.remove( "requested key") )
  // removes the "requested key" mapping from memory
