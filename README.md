@@ -36,9 +36,20 @@ To compile the included example
 ```
 ### Methods
 
+#### void put(Key, Value)
+
+![put-algo](https://media.giphy.com/media/l0HU80R2IakhMiHx6/giphy.gif)
+
+```
+ hashmap.put("requested key", Value)
+ // maps Value to "requested key", if it fails to do so in this block, it allocates new block of memory for the next block
+ // Overwrites the old value if found
+```
+The method also automatically optimizes the hashmap
+
 #### bool get(key, value)
 
-![get-algo](https://github.com/GrgoMariani/Layered-HashMap-Cpp/tree/master/GIFS/get.gif)
+![get-algo](https://media.giphy.com/media/xULW8rG1DfPxX80zDy/giphy.gif)
 
 ```
  if( hashmap.get("requested key", value)
@@ -53,19 +64,9 @@ To compile the included example
 ```
 The method automatically optimizes the hashmap where it can
 
-#### void put(Key, Value)
-
-![put-algo](https://github.com/GrgoMariani/Layered-HashMap-Cpp/tree/master/GIFS/put.gif)
-
-```
- hashmap.put("requested key", Value)
- // maps Value to "requested key", if it fails to do so in this block, it allocates new block of memory for the next block
- // Overwrites the old value if found
-```
-The method also automatically optimizes the hashmap
 #### void remove(key)
 
-![put-algo](https://github.com/GrgoMariani/Layered-HashMap-Cpp/tree/master/GIFS/remove.gif)
+![remove-algo](https://media.giphy.com/media/3oFzmoYSgunnyNYZbO/giphy.gif)
 
 ```
  hashmap.remove( "requested key") )
