@@ -1,58 +1,40 @@
-/*!  Copyright (c) 2017 Grgo Mariani @ Include Ltd. *
- * ------------------------------------------------ *
- * A simple example to check the HashMap            *
- * To compile :                                     *
-               g++ -std=c++11 example.cpp -o example
- *                                                  */
-
-#include <algorithm>
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
-#include <random>
 #include <string>
-#include <stdlib.h>
+
+#include "example_util.h"
 
 #include "HashMap/HashMap.h"
 
+/*!  Copyright (c) 2017 Grgo Mariani                *
+ * ------------------------------------------------ *
+ * A simple example to check the HashMap            *
+ *                                                  */
+
 using namespace std;
- /* StackOverflow is always great to get these kinds of functions in no time                      *
-  * https://stackoverflow.com/questions/440133/how-do-i-create-a-random-alpha-numeric-string-in-c */
-std::string random_string( size_t length )
-{
-    auto randchar = []() -> char
-    {
-        const char charset[] =
-        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        const size_t max_index = (sizeof(charset) - 1);
-        return charset[ rand() % max_index ];
-    };
-    std::string str(length,0);
-    std::generate_n( str.begin(), length, randchar );
-    return str;
-}
 
 template <typename K, typename V>
 void print_stats(CRT::HashMap<K,V>& hashmap){
-    cout<<endl;
-    cout<<"   -------------------------------------------"<<endl;
-    cout<<"  |                                           |"<<endl;
-    cout<<"  |             ------STATS------             |"<<endl;
-    cout<<"  |                                           |"<<endl;
-    cout<<"   -------------------------------------------"<<endl<<endl;
-    cout<<"Average complexity to find element is          : "<<hashmap.getSpeed()<<"   /MAX: "<<hashmap.getDepth()<<endl;
-    cout<<"Average complexity to insert element is        : "<<hashmap.putSpeed()<<"   /MAX: "<<hashmap.getDepth()*(hashmap.getDepth()+1)/2+1<<endl;
-    cout<<"Depth of HashMap is                            : "<<hashmap.getDepth()<<endl;
-    cout<<"Occupied space                                 : "<<hashmap.getOccupancy()<<endl;
-    cout<<"                                                /"<<hashmap.getMaxOccupancy()<<" ="<<(float)hashmap.getOccupancy()*100/hashmap.getMaxOccupancy()<<"%"<<endl;
-    cout<<"Chance the next element will be in collision   : "<<hashmap.chanceToCollideOnNext()<<"%"<<endl<<endl;
+    cout << endl;
+    cout << "   -------------------------------------------"  << endl;
+    cout << "  |                                           |" << endl;
+    cout << "  |             ------STATS------             |" << endl;
+    cout << "  |                                           |" << endl;
+    cout << "   -------------------------------------------"  << endl << endl;
+    cout << "Average complexity to find element is          : " << hashmap.getSpeed() << "   /MAX: " << hashmap.getDepth() << endl;
+    cout << "Average complexity to insert element is        : " << hashmap.putSpeed() << "   /MAX: " << hashmap.getDepth()*(hashmap.getDepth()+1)/2+1 << endl;
+    cout << "Depth of HashMap is                            : " << hashmap.getDepth() << endl;
+    cout << "Occupied space                                 : " << hashmap.getOccupancy() << endl;
+    cout << "                                                /" << hashmap.getMaxOccupancy() << " =" << (float)hashmap.getOccupancy()*100/hashmap.getMaxOccupancy() << "%" << endl;
+    cout << "Chance the next element will be in collision   : " << hashmap.chanceToCollideOnNext() << "%" << endl << endl;
     hashmap.print_get_vs_put();
     //hashmap.print_all();
 }
 
 void int_example(unsigned int number_of_elements, unsigned int size_of_first_block){
-    cout<<endl<<"random <int,int> example : "<<number_of_elements<<" "<<size_of_first_block<<endl;
+    cout << endl << "random <int,int> example : " << number_of_elements << " " << size_of_first_block << endl;
     CRT::HashMap<int, int> hashmap(size_of_first_block);
     for(unsigned int i=0; i<number_of_elements; i++)
         hashmap.put( rand()*(2<<16)+rand(), rand()*(2<<16)+rand() );  // Concatenates two 16bit rand() int to a 32bit int
@@ -60,15 +42,15 @@ void int_example(unsigned int number_of_elements, unsigned int size_of_first_blo
 }
 
 void string_example(unsigned int number_of_elements, unsigned int size_of_first_block){
-    cout<<endl<<"random <string,string> example : "<<number_of_elements<<" "<<size_of_first_block<<endl;
+    cout << endl << "random <string,string> example : " << number_of_elements << " " << size_of_first_block << endl;
     CRT::HashMap<string, string> hashmap(size_of_first_block);
     for(unsigned int i=0; i<number_of_elements; i++)
-        hashmap.put(random_string(20),random_string(20));
+        hashmap.put(random_string(20), random_string(20));
     print_stats(hashmap);
 }
 
 void usage_example(){
-    cout<<endl<<endl<<endl<<endl<<endl<<endl<<"STANDARD USAGE EXAMPLE : "<<endl;
+    cout << endl << endl << endl << endl << endl << endl << "STANDARD USAGE EXAMPLE : " << endl;
     CRT::HashMap<string, string> hm(15);
     string value;
     cout<<"Using put()"<<endl;
@@ -79,35 +61,35 @@ void usage_example(){
     hm.put("Key 25", "Value 25"); hm.put("Key 26", "Value 26"); hm.put("Key 27", "Value 27"); hm.put("Key 28", "Value 28"); hm.put("Key 29", "Value 29"); hm.put("Key 30", "Value 30");
     hm.put("Key 31", "Value 31"); hm.put("Key 32", "Value 32"); hm.put("Key 33", "Value 33"); hm.put("Key 34", "Value 34"); hm.put("Key 35", "Value 35"); hm.put("Key 36", "Value 36");
     print_stats(hm);
-    cout<<"Using get()"<<endl;
-    if( hm.get("NonExistingKey",value))
-        cout<<"!!! Something went wrong: "<<endl;
+    cout << "Using get()" << endl;
+    if( hm.get("NonExistingKey", value))
+        cout <<"!!! Something went wrong: "<<endl;
     else
-        cout<<"Key 'NonExistingKey' does not exist"<<endl;
-    if( hm.get("Key 2",value))
-        cout<<"The value @ 'Key 2' is: "<<value<<endl;
+        cout << "Key 'NonExistingKey' does not exist" << endl;
+    if( hm.get("Key 2", value))
+        cout << "The value @ 'Key 2' is: " << value << endl;
     else
-        cout<<"!!! Something went wrong"<<endl;
-    cout<<"Using remove() @      'Key 3'      &      'Key 7'"<<endl;
+        cout << "!!! Something went wrong" << endl;
+    cout << "Using remove() @      'Key 3'      &      'Key 7'" << endl;
     hm.remove("Key 3");
-    if( hm.get("Key 3",value))
-        cout<<"!!! Something went wrong "<<endl;
+    if( hm.get("Key 3", value))
+        cout << "!!! Something went wrong " << endl;
     else
-        cout<<"'Key 3' removed"<<endl;
+        cout << "'Key 3' removed" << endl;
     hm.remove("Key 7");
-    if( hm.get("Key 7",value))
-        cout<<"!!! Something went wrong "<<endl;
+    if( hm.get("Key 7", value))
+        cout << "!!! Something went wrong " << endl;
     else
-        cout<<"'Key 7' removed";
+        cout << "'Key 7' removed";
     print_stats(hm);
-    cout<<"Using clear()"<<endl;
+    cout << "Using clear()" << endl;
     hm.clear();
     print_stats(hm);
 }
 
 int main()
 {
-    cout<<std::fixed;
+    cout << std::fixed;
     int_example(10000000, 3000000);
     string_example(6000000, 3000000);
     usage_example();

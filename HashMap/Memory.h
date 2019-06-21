@@ -1,6 +1,9 @@
-#pragma once
+#ifndef __CRT_MEMORY_H__
+#define __CRT_MEMORY_H__
+
+#include <utility>
 /*!
- * Copyright (c) 2017 Grgo Mariani @ Include Ltd.
+ * Copyright (c) 2017 Grgo Mariani
  * Gnu GPL license
  * This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,73 +24,49 @@ namespace CRT{
    or other memory type other than RAM
  * Edit only methods commented with !                                                           */
 
-template <typename KEY, typename VALUE>
-class Memory{
-public:
-    //! Allocate
-    Memory(unsigned int memsize):_size(memsize){
-        mempair = new std::pair<KEY, VALUE>*[memsize];
-    }
-    //! Deallocate
-    ~Memory(){
-        delete[] mempair;
-    }
-    //! Returns pointer to element
-    std::pair<KEY, VALUE>* pointerToPosition(const unsigned int& whatposition){
-         return mempair[whatposition];
-    }
-    //! Deletes element from memory
-    void free(const unsigned int& whatposition){
-        delete mempair[whatposition];
-    }
-    //! Returns const element reference
-    const std::pair<KEY, VALUE>& getElement(const unsigned int& whatposition){
-        return *(mempair[whatposition]);
-    }
-    //! Sets Element on whatposition to given pointer
-    void setPointerToPosition(const unsigned int& whatposition, std::pair<KEY,VALUE>* whatpointer){
-        mempair[whatposition]=whatpointer;
-    }
-private:
-    const unsigned int _size;
-    std::pair<KEY, VALUE> ** mempair;
-};
+    template <typename KEY, typename VALUE>
+    class Memory{
+    public:
+        
+        Memory(unsigned int memsize);                                                                   //! Allocate
+        ~Memory();                                                                                      //! Deallocate
+        
+        std::pair<KEY, VALUE>* pointerToPosition(const unsigned int& whatposition);                     //! Returns pointer to element
+        
+        void                            free(const unsigned int& whatposition);                         //! Deletes element from memory
+        const std::pair<KEY, VALUE>&    getElement(const unsigned int& whatposition);                   //! Returns const element reference
+        
+        void setPointerToPosition(const unsigned int& whatposition, std::pair<KEY,VALUE>* whatpointer); //! Sets Element on whatposition to given pointer
+    private:
+        const unsigned int          _size;
+        std::pair<KEY, VALUE> **    mempair;
+    };
 
-/* Flag class can be left as is to work from RAM directly                                       */
+    /* Flag class can be left as is to work from RAM directly                                       */
 
-enum{ FLAG_EMPTY=0, FLAG_TAKEN=1, FLAG_ERASED=2 };
+    enum {
+        FLAG_EMPTY  = 0,
+        FLAG_TAKEN  = 1,
+        FLAG_ERASED = 2
+    };
 
-class Flag{
-public:
-    //! Allocate
-    Flag(unsigned int memsize):_size(memsize){
-        flags = new unsigned char[(memsize>>2)+1](); //Automatically sets all to 0, if you should change this be sure to do the same
-    }
-    //! Deallocate
-    ~Flag(){
-        delete[] flags;
-    }
-    //! Read from memory
-    unsigned char& getFlagBlock(const unsigned int& whatblock){
-        return flags[whatblock];
-    }
-    //! Write to memory
-    void setFlagBlock(const unsigned int& whatposition, const unsigned char& whatblock){
-        flags[whatposition] = whatblock;
-    }
-    // Save 1/4th of memory this way
-    void setFlag(const unsigned int& position, const unsigned char& flag){
-        unsigned char flagblock = getFlagBlock(position>>2);
-        flagblock &=  ~( 0b11<<( (position&0b11)<<1 ) ) ;
-        flagblock |= flag<<( (position&0b11)<<1 );
-        setFlagBlock(position>>2, flagblock);
-    }
-    unsigned char getFlag(const unsigned int& position){
-        return ( getFlagBlock(position>>2) >>( (position&0b11)<<1) ) & 0b11;
-    }
-private:
-    const unsigned char _size;
-    unsigned char * flags;
-};
+    class Flag{
+    public:
+        
+        Flag(unsigned int memsize);                                                                     //! Allocate
+        ~Flag();                                                                                        //! Deallocate
+        
+        unsigned char&  getFlagBlock(const unsigned int& whatblock);                                    //! Read from memory
+        void            setFlagBlock(const unsigned int& whatposition, const unsigned char& whatblock); //! Write to memory
+        // Save 1/4th of memory by using flags
+        void            setFlag(const unsigned int& position, const unsigned char& flag);
+        unsigned char   getFlag(const unsigned int& position);
+
+    private:
+        const unsigned char     _size;
+        unsigned char *         flags;
+    };
 
 }
+
+#endif//__CRT_MEMORY_H__

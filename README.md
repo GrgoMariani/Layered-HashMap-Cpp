@@ -3,17 +3,21 @@ A C++11 header for HashMap structure
 
 ### Info
 A project of mine made some time ago. While tinkering about HashMaps I realized I could do a really simple auto-dynamically-allocating one.
-By using the properties of Chinese Remainder Theorem we can achieve really quick read and writes, as well as keeping the memory allocation low as it can be.
-Tested on ridiculously big number of objects. Could be used to find 1 in 10^9 (1000000000) objects by using 16GB of space - average search depth is 2.26 reads, maximum search depth is 7 reads - so yeah, really really fast.
+
+By using the properties of Chinese Remainder Theorem we can achieve extremely quick read and writes, as well as keeping the memory allocation low as it can be.
+
+Tested on a ridiculously big number of objects. Could be used to find 1 in 10^9 (1000000000) objects by using only 16GB of space - average search depth is 2.26 reads, maximum search depth is 7 reads - so yeah, really really fast.
 It can be set to go even faster (avg 1.4 max 5) but requires twice the memory usage.
-More in the included .PDF file attached
+
+For those that are interested you can read more in the included [PDF file](ShortExplanation.pdf).
 
 ### Install
-Simply copy the HashMap directory to your project and include it in your file
+~~Copy the HashMap directory to your project and include it in your file~~
 ```
  #include "HashMap/HashMap.h"
 ```
-When compiling don't forget to add -std=c++11
+This was the old way. Check the `makefile` and  `example.cpp` .
+
 
 ### Usage
 The namespace used is CRT (as in Chinese Remainder Theorem). You can check sample usage in example.cpp file.
@@ -29,16 +33,19 @@ Should you want to create a bigger default HashMap or set the memory allocation 
  // Key=string , Value=float
 ```
 
+If you with another template pair include it in the .cpp files.
+
 ### Example
 To compile the included example
 ```
- g++ -std=c++11 example.cpp -o example
+ make
 ```
+
 ### Methods
 
 #### void put(Key, Value)
 
-![put-algo](https://media.giphy.com/media/l0HU80R2IakhMiHx6/giphy.gif)
+![put-algo](GIFS/put.gif)
 
 ```
  hashmap.put("requested key", Value)
@@ -49,7 +56,7 @@ The method also automatically optimizes the hashmap
 
 #### bool get(key, value)
 
-![get-algo](https://media.giphy.com/media/xULW8rG1DfPxX80zDy/giphy.gif)
+![get-algo](GIFS/get.gif)
 
 ```
  if( hashmap.get("requested key", value)
@@ -66,7 +73,7 @@ The method automatically optimizes the hashmap where it can
 
 #### void remove(key)
 
-![remove-algo](https://media.giphy.com/media/3oFzmoYSgunnyNYZbO/giphy.gif)
+![remove-algo](GIFS/remove.gif)
 
 ```
  hashmap.remove( "requested key") )
