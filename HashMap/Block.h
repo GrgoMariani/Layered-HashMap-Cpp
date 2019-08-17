@@ -24,18 +24,20 @@ template <typename KEY, typename VALUE>
 class Block{
 public:
     
-    Block(const unsigned int& prime);                                       // Constructor allocates memory && sets flags to zero
+    Block(const unsigned int prime);                                       // Constructor allocates memory && sets flags to zero
     ~Block();
 
     const std::pair<KEY, VALUE>& getElement(const KEY& key);
     bool deleteElement(const KEY& key);                                     //Returns true if element deleted from this block
         
-    const unsigned int& getOccupancy();
-    const unsigned int& getMaxOccupancy();
+    const unsigned int getOccupancy();
+    const unsigned int getMaxOccupancy();
     const unsigned int recommendedPosition(const std::pair<KEY,VALUE>& pairkeyvalue);
     const unsigned int recommendedPosition(const KEY& key);
     //Only for Debug purposes
-    /*! void print_all(); */
+#ifdef VERBOSE_DEBUG
+    void print_all();
+#endif
 public:
     //! No need to always count the key position, we can take only the last used one
     //! _position
@@ -56,12 +58,12 @@ protected:
     /*To change your hashFunction change this function*/
     unsigned int hashFunction(const KEY& key);
 private:
-    bool isKeyOnPosition(const KEY& key, const unsigned int& position);
-    bool isIntPositionErased(const unsigned int& whatposition);
-    bool isIntPositionFree(const unsigned int& whatposition);
-    void deleteIntElement(const unsigned int& whatposition);
-    const std::pair<KEY, VALUE>& getIntElement(const unsigned int& whatposition);
-    void setElementPointer(const unsigned int& whatposition, std::pair<KEY, VALUE>* whatkeyvalue);
+    bool isKeyOnPosition(const KEY& key, const unsigned int position);
+    bool isIntPositionErased(const unsigned int whatposition);
+    bool isIntPositionFree(const unsigned int whatposition);
+    void deleteIntElement(const unsigned int whatposition);
+    const std::pair<KEY, VALUE>& getIntElement(const unsigned int whatposition);
+    void setElementPointer(const unsigned int whatposition, std::pair<KEY, VALUE>* whatkeyvalue);
     void free_memory();                                                     //Implemented for faster memory deallocation, you can also get one element at a time and delete it
 private:
     const unsigned int  _prime;

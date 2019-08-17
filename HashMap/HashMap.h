@@ -32,7 +32,7 @@ public:
      * If not defined automatically set to 10000          *
      * Destructor clears all memory used                  */
     HashMap();
-    HashMap(const unsigned int& expectedSizeOfHashMap, bool descending=false);
+    HashMap(const unsigned int expectedSizeOfHashMap, bool descending=false);
     ~HashMap();
     //! We only use 4 methods
     //! bool get(kev, &value) which returns true if key found
@@ -51,7 +51,9 @@ public:
     float getSpeed();
     float putSpeed();
     //Only for Debug purposes
-    /*! void print_all();*/
+#ifdef VERBOSE_DEBUG
+    void print_all();
+#endif
     void            print_get_vs_put();
     unsigned int    getDepth();
     double          chanceToCollideOnNext();

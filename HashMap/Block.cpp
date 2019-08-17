@@ -20,7 +20,7 @@
 namespace CRT{
 
     template <typename KEY, typename VALUE>
-    Block<KEY, VALUE>::Block(const unsigned int& prime) : _prime(prime), occupancy(0), _position(0), memory(nullptr), flags(nullptr) {
+    Block<KEY, VALUE>::Block(const unsigned int prime) : _prime(prime), occupancy(0), _position(0), memory(nullptr), flags(nullptr) {
         memory = new Memory<KEY,VALUE>(prime);
         flags = new Flag(prime);
     }
@@ -48,12 +48,12 @@ namespace CRT{
     }
 
     template <typename KEY, typename VALUE>
-    const unsigned int& Block<KEY, VALUE>::getOccupancy(){
+    const unsigned int Block<KEY, VALUE>::getOccupancy(){
         return occupancy;
     }
 
     template <typename KEY, typename VALUE>
-    const unsigned int& Block<KEY, VALUE>::getMaxOccupancy(){
+    const unsigned int Block<KEY, VALUE>::getMaxOccupancy(){
         return _prime;
     }
 
@@ -67,8 +67,8 @@ namespace CRT{
         return hashFunction(key);
     }
 
-    //Only for Debug purposes
-    /*! template <typename KEY, typename VALUE>
+#ifdef VERBOSE_DEBUG
+    template <typename KEY, typename VALUE>
         void Block<KEY, VALUE>::print_all(){
         for(unsigned int i=0; i<_prime; i++){
             std::cout<<i<<"  Flag: "<<(flags->getFlag(i)==FLAG_EMPTY?" EMPTY ":(flags->getFlag(i)==FLAG_TAKEN?" TAKEN ":"DELETED"));
@@ -76,7 +76,8 @@ namespace CRT{
                 std::cout<<"       KEY: "<<getIntElement(i).first<<" VALUE: "<<getIntElement(i).second<<std::endl;
             else std::cout<<std::endl;
         }
-    }*/
+    }
+#endif
 
     template <typename KEY, typename VALUE>
     void Block<KEY, VALUE>::setKey_opt(const KEY& key){
@@ -159,40 +160,40 @@ namespace CRT{
     }
 
     template <typename KEY, typename VALUE>
-    bool Block<KEY, VALUE>::isKeyOnPosition(const KEY& key, const unsigned int& position){
+    bool Block<KEY, VALUE>::isKeyOnPosition(const KEY& key, const unsigned int position){
         if( !isIntPositionFree(position) && getIntElement(position).first==key )
             return true;
         return false;
     }
 
     template <typename KEY, typename VALUE>
-    bool Block<KEY, VALUE>::isIntPositionErased(const unsigned int& whatposition){
+    bool Block<KEY, VALUE>::isIntPositionErased(const unsigned int whatposition){
         if(flags->getFlag(whatposition)==FLAG_ERASED)
             return true;
         return false;
     }
 
     template <typename KEY, typename VALUE>
-    bool Block<KEY, VALUE>::isIntPositionFree(const unsigned int& whatposition){
+    bool Block<KEY, VALUE>::isIntPositionFree(const unsigned int whatposition){
         if(flags->getFlag(whatposition)==FLAG_TAKEN)
             return false;
         return true;
     }
 
     template <typename KEY, typename VALUE>
-    void Block<KEY, VALUE>::deleteIntElement(const unsigned int& whatposition){
+    void Block<KEY, VALUE>::deleteIntElement(const unsigned int whatposition){
         memory->free(whatposition);
         occupancy--;
         flags->setFlag(whatposition, FLAG_ERASED);
     }
 
     template <typename KEY, typename VALUE>
-    const std::pair<KEY, VALUE>& Block<KEY, VALUE>::getIntElement(const unsigned int& whatposition){
+    const std::pair<KEY, VALUE>& Block<KEY, VALUE>::getIntElement(const unsigned int whatposition){
         return memory->getElement(whatposition);
     }
 
     template <typename KEY, typename VALUE>
-    void Block<KEY, VALUE>::setElementPointer(const unsigned int& whatposition, std::pair<KEY, VALUE>* whatkeyvalue){
+    void Block<KEY, VALUE>::setElementPointer(const unsigned int whatposition, std::pair<KEY, VALUE>* whatkeyvalue){
         memory->setPointerToPosition(whatposition, whatkeyvalue);
         occupancy++;
         flags->setFlag(whatposition, FLAG_TAKEN);

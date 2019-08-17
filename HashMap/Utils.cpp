@@ -5,7 +5,7 @@
  */
 namespace CRT{
 
-    bool isPrime(const unsigned int& number)
+    bool isPrime(const unsigned int number)
     {
         if (number == 2 || number == 3)
             return true;
@@ -28,7 +28,7 @@ namespace CRT{
         return a;
     }
     
-    int previousPrime(unsigned int a, unsigned int minPrime)
+    int previousPrime(unsigned int a, const unsigned int minPrime)
     {
         if(a<=minPrime)
             return minPrime;

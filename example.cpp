@@ -1,17 +1,18 @@
+/*!  Copyright (c) 2017 Grgo Mariani                *
+ * ------------------------------------------------ *
+ * A simple example to check the HashMap            *
+ *                                                  */
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
 #include <string>
 
-#include "example_util.h"
-
 #include "HashMap/HashMap.h"
 
-/*!  Copyright (c) 2017 Grgo Mariani                *
- * ------------------------------------------------ *
- * A simple example to check the HashMap            *
- *                                                  */
+#include "example_util.h"
+#include "Wrapper/main_func.h"
+
 
 using namespace std;
 
@@ -25,16 +26,18 @@ void print_stats(CRT::HashMap<K,V>& hashmap){
     cout << "   -------------------------------------------"  << endl << endl;
     cout << "Average complexity to find element is          : " << hashmap.getSpeed() << "   /MAX: " << hashmap.getDepth() << endl;
     cout << "Average complexity to insert element is        : " << hashmap.putSpeed() << "   /MAX: " << hashmap.getDepth()*(hashmap.getDepth()+1)/2+1 << endl;
-    cout << "Depth of HashMap is                            : " << hashmap.getDepth() << endl;
-    cout << "Occupied space                                 : " << hashmap.getOccupancy() << endl;
-    cout << "                                                /" << hashmap.getMaxOccupancy() << " =" << (float)hashmap.getOccupancy()*100/hashmap.getMaxOccupancy() << "%" << endl;
+    cout << "Depth of HashMap is                            : " << hashmap.getDepth() 			<< endl;
+    cout << "Occupied space                                 : " << hashmap.getOccupancy() 		<< endl;
+    cout << "                                                /" << hashmap.getMaxOccupancy() 	<< " =" << (float)hashmap.getOccupancy()*100/hashmap.getMaxOccupancy() << "%" << endl;
     cout << "Chance the next element will be in collision   : " << hashmap.chanceToCollideOnNext() << "%" << endl << endl;
     hashmap.print_get_vs_put();
-    //hashmap.print_all();
+#ifdef VERBOSE_DEBUG
+    hashmap.print_all();
+#endif
 }
 
 void int_example(unsigned int number_of_elements, unsigned int size_of_first_block){
-    cout << endl << "random <int,int> example : " << number_of_elements << " " << size_of_first_block << endl;
+    cout << endl << "random <int,int> example : writing " << number_of_elements << " <int,int> elements into blocks of size " << size_of_first_block << endl;
     CRT::HashMap<int, int> hashmap(size_of_first_block);
     for(unsigned int i=0; i<number_of_elements; i++)
         hashmap.put( rand()*(2<<16)+rand(), rand()*(2<<16)+rand() );  // Concatenates two 16bit rand() int to a 32bit int
@@ -42,14 +45,14 @@ void int_example(unsigned int number_of_elements, unsigned int size_of_first_blo
 }
 
 void string_example(unsigned int number_of_elements, unsigned int size_of_first_block){
-    cout << endl << "random <string,string> example : " << number_of_elements << " " << size_of_first_block << endl;
+    cout << endl << "random <string,string> example : writing " << number_of_elements << " <string,string> elements into blocks of size " << size_of_first_block << endl;
     CRT::HashMap<string, string> hashmap(size_of_first_block);
     for(unsigned int i=0; i<number_of_elements; i++)
         hashmap.put(random_string(20), random_string(20));
     print_stats(hashmap);
 }
 
-void usage_example(){
+void standard_usage_example(){
     cout << endl << endl << endl << endl << endl << endl << "STANDARD USAGE EXAMPLE : " << endl;
     CRT::HashMap<string, string> hm(15);
     string value;
@@ -87,11 +90,11 @@ void usage_example(){
     print_stats(hm);
 }
 
-int main()
+int _main_(int argc, char *argv[])
 {
     cout << std::fixed;
-    int_example(10000000, 3000000);
-    string_example(6000000, 3000000);
-    usage_example();
+    int_example(10000000, 15000000);
+    string_example(6000000, 9000000);
+    standard_usage_example();
     return 0;
 }

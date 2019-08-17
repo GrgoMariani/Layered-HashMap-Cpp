@@ -31,10 +31,10 @@ namespace CRT{
         Memory(unsigned int memsize);                                                                   //! Allocate
         ~Memory();                                                                                      //! Deallocate
         
-        std::pair<KEY, VALUE>* pointerToPosition(const unsigned int& whatposition);                     //! Returns pointer to element
+        std::pair<KEY, VALUE>* pointerToPosition(const unsigned int whatposition);                     //! Returns pointer to element
         
-        void                            free(const unsigned int& whatposition);                         //! Deletes element from memory
-        const std::pair<KEY, VALUE>&    getElement(const unsigned int& whatposition);                   //! Returns const element reference
+        void                            free(const unsigned int whatposition);                         //! Deletes element from memory
+        const std::pair<KEY, VALUE>&    getElement(const unsigned int whatposition);                   //! Returns const element reference
         
         void setPointerToPosition(const unsigned int& whatposition, std::pair<KEY,VALUE>* whatpointer); //! Sets Element on whatposition to given pointer
     private:

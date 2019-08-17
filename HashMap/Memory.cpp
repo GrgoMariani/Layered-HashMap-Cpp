@@ -33,17 +33,17 @@ namespace CRT{
     }
 
     template <typename KEY, typename VALUE>
-    std::pair<KEY, VALUE>* Memory<KEY, VALUE>::pointerToPosition(const unsigned int& whatposition){
+    std::pair<KEY, VALUE>* Memory<KEY, VALUE>::pointerToPosition(const unsigned int whatposition){
          return mempair[whatposition];
     }
     
     template <typename KEY, typename VALUE>
-    void Memory<KEY, VALUE>::free(const unsigned int& whatposition){
+    void Memory<KEY, VALUE>::free(const unsigned int whatposition){
         delete mempair[whatposition];
     }
     
     template <typename KEY, typename VALUE>
-    const std::pair<KEY, VALUE>& Memory<KEY, VALUE>::getElement(const unsigned int& whatposition){
+    const std::pair<KEY, VALUE>& Memory<KEY, VALUE>::getElement(const unsigned int whatposition){
         return *(mempair[whatposition]);
     }
     
@@ -52,10 +52,8 @@ namespace CRT{
         mempair[whatposition]=whatpointer;
     }
 
-
-
     Flag::Flag(unsigned int memsize) : _size(memsize){
-        flags = new unsigned char[(memsize>>2)+1](); //Automatically sets all to 0, if you should change this be sure to do the same
+        flags = new unsigned char[(memsize>>2)+1](); // Automatically sets all to 0, if you should change this be sure to do the same
     }
 
     Flag::~Flag(){

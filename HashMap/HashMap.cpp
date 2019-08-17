@@ -25,15 +25,15 @@ namespace CRT{
     }
 
     template <typename KEY, typename VALUE>
-    HashMap<KEY, VALUE>::HashMap(const unsigned int& expectedSizeOfHashMap, bool descending) : desiredSize(expectedSizeOfHashMap), _descending(descending){
+    HashMap<KEY, VALUE>::HashMap(const unsigned int expectedSizeOfHashMap, bool descending) : desiredSize(expectedSizeOfHashMap), _descending(descending){
         nextSize=nextPrime(expectedSizeOfHashMap-1);
         blocks.push_back( new Block<KEY, VALUE>(nextSize));
     }
 
     template <typename KEY, typename VALUE>
     HashMap<KEY, VALUE>::~HashMap(){
-        for(auto& block : blocks)
-            delete block;
+    	for(auto& block : blocks)
+    		delete block;
     }
     
     template <typename KEY, typename VALUE>
@@ -165,15 +165,16 @@ namespace CRT{
         return result + chance * ( blocks.size()+1 )*blocks.size()/2;
     }
 
-    //Only for Debug purposes
-    /*! template <typename KEY, typename VALUE>
-        void HashMap<KEY, VALUE>::print_all(){
+#ifdef VERBOSE_DEBUG
+    template <typename KEY, typename VALUE>
+    void HashMap<KEY, VALUE>::print_all(){
         int iter=0;
         for(auto& block : blocks){
             std::cout<<"------BLOCK "<<(++iter)<<"------"<<std:endl;
             block->print_all();
         }
-    }*/
+    }
+#endif
 
     template <typename KEY, typename VALUE>
     void HashMap<KEY, VALUE>::print_get_vs_put(){

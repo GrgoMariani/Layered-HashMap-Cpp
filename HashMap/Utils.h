@@ -5,8 +5,8 @@
  */
 namespace CRT{
 
-    bool isPrime(const unsigned int& number);
+    bool isPrime(const unsigned int number);
     int nextPrime(unsigned int a);
-    int previousPrime(unsigned int a, unsigned int minPrime=13);
+    int previousPrime(unsigned int a, const unsigned int minPrime=13);
 
 }
