@@ -4,16 +4,19 @@ A C++11 header for HashMap structure
 ### Info
 A project of mine made some time ago. While tinkering about HashMaps I realized I could do a really simple auto-dynamically-allocating one.
 
-By using the properties of Chinese Remainder Theorem we can achieve extremely quick read and writes, as well as keeping the memory allocation low as it can be.
+By using the properties of `Chinese Remainder Theorem` we can achieve extremely quick read and writes, as well as keeping the memory allocation low as it can be.
 
 Tested on a ridiculously big number of objects. Could be used to find 1 in 10^9 (1000000000) objects by using only 16GB of space - average search depth is 2.26 reads, maximum search depth is 7 reads - so yeah, really really fast.
-It can be set to go even faster (avg 1.4 max 5) but requires twice the memory usage.
+It can be set to go even faster (avg 1.4 max 5).
 
 For those that are interested you can read more in the included [PDF file](ShortExplanation.pdf).
 
 ### Install
 Clone the repo and just `make` . The repo supports MinGW and Linux.
+
 This will only compile the example, but what more do you need.
+
+You can find the executables in `build/crt_hashmap_example` and `build/stdlib_hashmap_example`.
 
 ## Benchmark
 Check the makefile. You can either compile my version of the HashMap or the stdlib `std::unordered_map<>` .
@@ -42,7 +45,7 @@ If you would like to compile with some other template pair include it in the .cp
 
 ### Future
 
-I've got some changes I need to do. _(further optimize speed, simplify usage, improve debug and logging)_
+I've got some changes I need to do. _(benchmarks against stdlib, further optimize speed, simplify usage, improve debug and logging, auto-optimization, ...)_
 
 ### Example
 To compile the included example
@@ -100,6 +103,6 @@ Should you use your custom object as value don't forget to assign the correct co
 ~~I've commented a few methods I didn't use but you could find useful. HashMap::print_all() prints all elements of the table and the flags on positions. Feel free to uncomment it in 'Block.h' 'and HashMap.h' and use.~~
 You can now use the VERBOSE_DEBUG define flag while compiling.
 
-The structure could be easily repurposed to read from HardDrive instead of RAM should you have even more elements, or even made with multithread support to get the best out of the speed and memory allocation.
+The structure could be easily re-purposed to read from HardDrive instead of RAM should you have even more elements, or even made with multi-thread support to get the best out of the speed and memory allocation.
 
 Or both.
